@@ -212,10 +212,10 @@ void main() {
     });
 
     test('spring can be set and read', () {
-      state.spring = const HeroSpringConfig(stiffness: 200, damping: 15);
+      state.spring = const HeroSpringConfig(stiffness: 200, dampingRatio: 15);
       expect(state.spring, isNotNull);
       expect(state.spring!.stiffness, equals(200));
-      expect(state.spring!.damping, equals(15));
+      expect(state.spring!.dampingRatio, equals(15));
     });
 
     test('arcIntensity can be set and read', () {
@@ -339,14 +339,14 @@ void main() {
   // ================================================================
   group('HeroSpringConfig', () {
     test('stores stiffness and damping', () {
-      const config = HeroSpringConfig(stiffness: 300, damping: 20);
+      const config = HeroSpringConfig(stiffness: 300, dampingRatio: 20);
       expect(config.stiffness, equals(300));
-      expect(config.damping, equals(20));
+      expect(config.dampingRatio, equals(20));
     });
 
     test('supports const construction', () {
-      const a = HeroSpringConfig(stiffness: 100, damping: 10);
-      const b = HeroSpringConfig(stiffness: 100, damping: 10);
+      const a = HeroSpringConfig(stiffness: 100, dampingRatio: 10);
+      const b = HeroSpringConfig(stiffness: 100, dampingRatio: 10);
       // const instances with same values are identical
       expect(identical(a, b), isTrue);
     });
@@ -574,11 +574,11 @@ void main() {
 
     test('spring modifier sets config', () {
       final state = HeroTargetState.fromModifiers([
-        HeroModifier.spring(stiffness: 250, damping: 18),
+        HeroModifier.spring(stiffness: 250, dampingRatio: 18),
       ]);
       expect(state.spring, isNotNull);
       expect(state.spring!.stiffness, equals(250));
-      expect(state.spring!.damping, equals(18));
+      expect(state.spring!.dampingRatio, equals(18));
     });
 
     test('overlay modifier sets state', () {

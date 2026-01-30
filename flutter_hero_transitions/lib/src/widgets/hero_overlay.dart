@@ -45,7 +45,7 @@ class _HeroOverlayState extends State<HeroOverlay>
           child: Stack(
             children: [
               // Optional background color
-              if (HeroTransitionEngine.shared.containerColor.alpha > 0)
+              if ((HeroTransitionEngine.shared.containerColor.a * 255).round() > 0)
                 Positioned.fill(
                   child: ColoredBox(
                     color: HeroTransitionEngine.shared.containerColor,
@@ -104,7 +104,7 @@ class _HeroOverlayState extends State<HeroOverlay>
                         BorderRadius.circular(entry.currentCornerRadius),
                     child: ColoredBox(
                       color: entry.overlayColor!
-                          .withOpacity(entry.overlayOpacity!.clamp(0.0, 1.0)),
+                          .withValues(alpha: entry.overlayOpacity!.clamp(0.0, 1.0)),
                     ),
                   ),
                 ),

@@ -32,7 +32,7 @@ class HeroExamplesApp extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             child!,
-            const HeroOverlay(),
+            const HeroOverlayV2(), // Optimized overlay for better performance
           ],
         );
       },

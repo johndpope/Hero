@@ -467,16 +467,16 @@ void main() {
     });
 
     test('spring sets spring config', () {
-      HeroModifier.spring(stiffness: 100.0, damping: 15.0).apply(state);
+      HeroModifier.spring(stiffness: 100.0, dampingRatio: 15.0).apply(state);
       expect(state.spring, isNotNull);
       expect(state.spring!.stiffness, 100.0);
-      expect(state.spring!.damping, 15.0);
+      expect(state.spring!.dampingRatio, 15.0);
     });
 
     test('spring with high stiffness and low damping', () {
-      HeroModifier.spring(stiffness: 500.0, damping: 5.0).apply(state);
+      HeroModifier.spring(stiffness: 500.0, dampingRatio: 5.0).apply(state);
       expect(state.spring!.stiffness, 500.0);
-      expect(state.spring!.damping, 5.0);
+      expect(state.spring!.dampingRatio, 5.0);
     });
   });
 
@@ -947,14 +947,14 @@ void main() {
       HeroModifier.duration(const Duration(milliseconds: 400)).apply(state);
       HeroModifier.delay(const Duration(milliseconds: 100)).apply(state);
       HeroModifier.curve(Curves.easeOut).apply(state);
-      HeroModifier.spring(stiffness: 200, damping: 20).apply(state);
+      HeroModifier.spring(stiffness: 200, dampingRatio: 20).apply(state);
 
       expect(state.duration, const Duration(milliseconds: 400));
       expect(state.delay, const Duration(milliseconds: 100));
       expect(state.curve, Curves.easeOut);
       expect(state.spring, isNotNull);
       expect(state.spring!.stiffness, 200.0);
-      expect(state.spring!.damping, 20.0);
+      expect(state.spring!.dampingRatio, 20.0);
     });
   });
 

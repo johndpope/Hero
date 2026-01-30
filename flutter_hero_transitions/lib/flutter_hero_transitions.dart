@@ -20,6 +20,7 @@ export 'src/modifiers/hero_modifier.dart';
 // --- Widgets ---
 export 'src/widgets/hero_view.dart';
 export 'src/widgets/hero_overlay.dart';
+export 'src/widgets/hero_overlay_v2.dart'; // Optimized overlay
 export 'src/widgets/hero_scope.dart';
 export 'src/widgets/hero_interactive_gesture.dart';
 
@@ -36,6 +37,8 @@ export 'src/animator/hero_animation_entry.dart';
 export 'src/animator/arc_tween.dart';
 export 'src/animator/hero_progress_runner.dart';
 export 'src/animator/hero_spring_simulation.dart';
+export 'src/animator/hero_spring_v2.dart'; // Improved spring with settling detection
+export 'src/animator/hero_display_link.dart'; // CADisplayLink-style timing
 
 // --- Plugins ---
 export 'src/plugins/hero_plugin.dart';

@@ -1,8 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import '../types/hero_target_state.dart';
 import '../extensions/curve_extensions.dart';
 import 'arc_tween.dart';
+import 'hero_spring_simulation.dart';
 
 /// Represents one animating element in the transition overlay.
 /// Holds tweens, current computed values, and seek logic.
@@ -149,9 +149,15 @@ class HeroAnimationEntry {
 
   /// Seek to a specific progress value (0.0 to 1.0).
   void seekTo(double progress) {
-    final curve = targetState.curve ?? HeroCurves.iosEaseInOut;
-    final delayFraction = animationDuration.inMicroseconds > 0
-        ? targetState.delay.inMicroseconds / animationDuration.inMicroseconds
+    // Use Material Standard curve (0.4, 0, 0.2, 1) — the ACTUAL default
+    // used by iOS Hero library (NOT iOS system easeInOut).
+    final curve = targetState.curve ?? HeroCurves.standard;
+
+    // Total duration including delay
+    final totalDurationUs = animationDuration.inMicroseconds +
+        targetState.delay.inMicroseconds;
+    final delayFraction = totalDurationUs > 0
+        ? targetState.delay.inMicroseconds / totalDurationUs
         : 0.0;
 
     // Adjust progress for delay
@@ -163,9 +169,37 @@ class HeroAnimationEntry {
           ((progress - delayFraction) / (1.0 - delayFraction)).clamp(0.0, 1.0);
     }
 
-    final curvedT = curve.transform(adjustedProgress);
+    // Apply spring physics if spring is set
+    double curvedT;
+    if (targetState.spring != null) {
+      // Use real spring simulation like iOS CASpringAnimation
+      curvedT = _evaluateSpring(adjustedProgress);
+    } else {
+      curvedT = curve.transform(adjustedProgress);
+    }
 
     _applyProgress(curvedT);
+  }
+
+  /// Evaluate spring physics at a given normalized time.
+  /// Returns the output position (0.0 to 1.0) matching CASpringAnimation behavior.
+  double _evaluateSpring(double normalizedTime) {
+    if (normalizedTime <= 0.0) return 0.0;
+    if (normalizedTime >= 1.0) return 1.0;
+
+    final spring = targetState.spring!;
+    final sim = HeroSpringSimulation(
+      initialPosition: 0.0,
+      targetPosition: 1.0,
+      mass: spring.mass,
+      stiffness: spring.stiffness,
+      dampingRatio: spring.dampingRatio,
+    );
+
+    // Map normalizedTime to actual spring time
+    final springDuration = sim.settlingDuration;
+    final time = normalizedTime * springDuration;
+    return sim.x(time).clamp(0.0, 1.5); // Allow slight overshoot for bounce
   }
 
   void _applyProgress(double t) {
@@ -214,7 +248,7 @@ class HeroAnimationEntry {
   BoxShadow? get currentBoxShadow {
     if (currentShadowOpacity <= 0) return null;
     return BoxShadow(
-      color: currentShadowColor.withOpacity(currentShadowOpacity),
+      color: currentShadowColor.withValues(alpha: currentShadowOpacity),
       blurRadius: currentShadowRadius,
       offset: currentShadowOffset,
     );

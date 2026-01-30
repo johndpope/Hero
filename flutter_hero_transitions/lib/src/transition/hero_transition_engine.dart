@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import '../types/hero_transition_state.dart';
 import '../types/hero_animation_type.dart';
@@ -256,8 +254,8 @@ class HeroTransitionEngine extends ChangeNotifier {
       toViewIDs: toIDs,
     );
 
-    // Notify overlay of active animations
-    _notifyAnimations();
+    // Set entries list (structural change — triggers widget rebuild)
+    _updateEntriesList();
 
     if (!interactive) {
       // Non-interactive: drive animation with AnimationController
@@ -360,8 +358,18 @@ class HeroTransitionEngine extends ChangeNotifier {
 
   void _notifyAnimations() {
     if (_animator == null) return;
-    // Trigger rebuild by setting a new list reference
-    activeAnimations.value = List.from(_animator!.entries.values);
+    // Notify listeners without creating a new List every frame.
+    // The overlay's render objects listen directly and call markNeedsPaint().
+    // Only create a new list on first call (structural change).
+    // Subsequent calls just notify to trigger repaint.
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    activeAnimations.notifyListeners();
+  }
+
+  /// Update the entries list (called when entries are first created).
+  void _updateEntriesList() {
+    if (_animator == null) return;
+    activeAnimations.value = List.unmodifiable(_animator!.entries.values);
   }
 
   /// Dispose the engine (for testing).

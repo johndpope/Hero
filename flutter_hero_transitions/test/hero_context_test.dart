@@ -630,7 +630,7 @@ void main() {
         HeroModifier.cornerRadius(8.0),
         HeroModifier.backgroundColor(const Color(0xFFFF0000)),
         HeroModifier.delay(const Duration(milliseconds: 100)),
-        HeroModifier.spring(stiffness: 300, damping: 30),
+        HeroModifier.spring(stiffness: 300, dampingRatio: 30),
       ]);
 
       final state = heroCtx['compose']!;
@@ -641,7 +641,7 @@ void main() {
       expect(state.delay, equals(const Duration(milliseconds: 100)));
       expect(state.spring, isNotNull);
       expect(state.spring!.stiffness, equals(300));
-      expect(state.spring!.damping, equals(30));
+      expect(state.spring!.dampingRatio, equals(30));
     });
   });
 

@@ -1,7 +1,7 @@
 
 
 target 'HeroExamples' do
-  platform :ios, '10.0'
+  platform :ios, '15.0'
   use_frameworks!
   pod 'CollectionKit', :inhibit_warnings => true
 
@@ -11,6 +11,14 @@ target 'HeroExamples' do
 end
 
 target 'HeroTvOSExamples' do
-  platform :tvos, '10.0'
+  platform :tvos, '15.0'
   use_frameworks!
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
 end

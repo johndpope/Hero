@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import '../transition/hero_context.dart';
 import '../types/hero_target_state.dart';
@@ -135,25 +133,22 @@ class HeroDefaultAnimator {
     entries.clear();
   }
 
-  /// Calculate duration based on iOS Core Animation timing.
+  /// Calculate duration using the EXACT iOS Hero formula.
   ///
-  /// iOS defaults:
-  /// - Base duration: 0.3s (300ms) for most transitions
-  /// - Long distance: up to 0.5s (500ms) for very large moves
+  /// From HeroDefaultAnimator.swift:
+  ///   let movePoints = (realFromPos.distance(realToPos) + realFromSize.point.distance(realToSize.point))
+  ///   let duration = 0.208 + Double(movePoints.clamp(0, 500)) / 3000
   ///
-  /// Formula: 0.3 + (distance / screen_width) * 0.2
-  /// This gives 0.3s for short moves, scaling to 0.5s for full-screen.
+  /// This gives 208ms @ 0pt → 375ms @ 500pt.
   Duration _calculateDuration(Rect from, Rect to) {
-    final moveDistance = (from.center - to.center).distance;
-    final widthChange = (from.width - to.width).abs();
-    final heightChange = (from.height - to.height).abs();
-    final sizeChange = math.sqrt(widthChange * widthChange + heightChange * heightChange);
-    final maxChange = math.max(moveDistance, sizeChange);
+    final positionDistance = (from.center - to.center).distance;
+    final sizeDistance = (Offset(from.width, from.height) -
+            Offset(to.width, to.height))
+        .distance;
+    final movePoints = positionDistance + sizeDistance;
 
-    // iOS default: 0.3s base, up to 0.5s for large distances
-    // Assume typical screen width ~400 logical pixels
-    final distanceRatio = (maxChange / 400.0).clamp(0.0, 1.0);
-    final seconds = 0.3 + distanceRatio * 0.2;
+    // EXACT iOS formula: 0.208 + clamp(movePoints, 0, 500) / 3000
+    final seconds = 0.208 + movePoints.clamp(0.0, 500.0) / 3000.0;
 
     return Duration(milliseconds: (seconds * 1000).round());
   }
