@@ -35,6 +35,7 @@ export 'src/animator/hero_default_animator.dart';
 export 'src/animator/hero_animation_entry.dart';
 export 'src/animator/arc_tween.dart';
 export 'src/animator/hero_progress_runner.dart';
+export 'src/animator/hero_spring_simulation.dart';
 
 // --- Plugins ---
 export 'src/plugins/hero_plugin.dart';

@@ -263,10 +263,22 @@ class HeroModifier {
     });
   }
 
-  /// Use spring animation with custom stiffness and damping.
-  static HeroModifier spring({required double stiffness, required double damping}) {
+  /// Use spring animation with custom stiffness and damping ratio.
+  ///
+  /// iOS default: stiffness=230, dampingRatio=0.825
+  /// Bouncy spring: dampingRatio=0.65
+  /// Stiff spring: dampingRatio=0.9
+  static HeroModifier spring({
+    double stiffness = 230.0,
+    double dampingRatio = 0.825,
+    double mass = 1.0,
+  }) {
     return HeroModifier._((state) {
-      state.spring = HeroSpringConfig(stiffness: stiffness, damping: damping);
+      state.spring = HeroSpringConfig(
+        mass: mass,
+        stiffness: stiffness,
+        dampingRatio: dampingRatio,
+      );
     });
   }
 

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import '../types/hero_target_state.dart';
+import '../extensions/curve_extensions.dart';
 import 'arc_tween.dart';
 
 /// Represents one animating element in the transition overlay.
@@ -148,7 +149,7 @@ class HeroAnimationEntry {
 
   /// Seek to a specific progress value (0.0 to 1.0).
   void seekTo(double progress) {
-    final curve = targetState.curve ?? Curves.easeInOut;
+    final curve = targetState.curve ?? HeroCurves.iosEaseInOut;
     final delayFraction = animationDuration.inMicroseconds > 0
         ? targetState.delay.inMicroseconds / animationDuration.inMicroseconds
         : 0.0;

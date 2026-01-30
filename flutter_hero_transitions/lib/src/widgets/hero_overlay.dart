@@ -75,19 +75,23 @@ class _HeroOverlayState extends State<HeroOverlay>
             clipBehavior: Clip.none,
             children: [
               // Main content
-              ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(entry.currentCornerRadius),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: entry.currentBackgroundColor,
-                    borderRadius:
-                        BorderRadius.circular(entry.currentCornerRadius),
-                    boxShadow: entry.currentBoxShadow != null
-                        ? [entry.currentBoxShadow!]
-                        : null,
+              SizedBox(
+                width: entry.currentRect.width.clamp(0.0, double.infinity),
+                height: entry.currentRect.height.clamp(0.0, double.infinity),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(entry.currentCornerRadius),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: entry.currentBackgroundColor,
+                      borderRadius:
+                          BorderRadius.circular(entry.currentCornerRadius),
+                      boxShadow: entry.currentBoxShadow != null
+                          ? [entry.currentBoxShadow!]
+                          : null,
+                    ),
+                    child: entry.snapshotWidget,
                   ),
-                  child: entry.snapshotWidget,
                 ),
               ),
               // Overlay

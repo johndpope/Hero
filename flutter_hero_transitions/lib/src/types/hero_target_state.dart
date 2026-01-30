@@ -6,12 +6,41 @@ import 'hero_coordinate_space.dart';
 import 'hero_snapshot_type.dart';
 import 'hero_conditional_context.dart';
 
-/// Configuration for spring physics animation.
+/// Configuration for spring physics animation matching iOS CASpringAnimation.
+///
+/// iOS default spring settings:
+/// - Mass: 1.0
+/// - Stiffness: 230.0
+/// - Damping ratio: 0.825 (derived from damping coefficient)
+///
+/// These produce the smooth, weighty feel of iOS animations.
 class HeroSpringConfig {
+  final double mass;
   final double stiffness;
-  final double damping;
+  final double dampingRatio;
 
-  const HeroSpringConfig({required this.stiffness, required this.damping});
+  const HeroSpringConfig({
+    this.mass = 1.0,
+    this.stiffness = 230.0,
+    this.dampingRatio = 0.825,
+  });
+
+  /// iOS default spring configuration.
+  static const HeroSpringConfig ios = HeroSpringConfig();
+
+  /// Bouncy spring (more oscillation).
+  static const HeroSpringConfig bouncy = HeroSpringConfig(
+    mass: 1.0,
+    stiffness: 180.0,
+    dampingRatio: 0.65,
+  );
+
+  /// Stiff spring (less oscillation, faster settling).
+  static const HeroSpringConfig stiff = HeroSpringConfig(
+    mass: 1.0,
+    stiffness: 300.0,
+    dampingRatio: 0.9,
+  );
 }
 
 /// Configuration for cascade (staggered) animations.

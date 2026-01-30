@@ -24,7 +24,7 @@ class AppStoreScreen1 extends StatelessWidget {
             child: HeroView(
               id: cardHeroId,
               modifiers: [
-                HeroModifier.spring(stiffness: 250, damping: 25),
+                HeroModifier.spring(stiffness: 250, dampingRatio: 0.79),
                 HeroModifier.useNoSnapshot,
               ],
               child: RoundedCardWrapper(
@@ -88,7 +88,7 @@ class AppStoreScreen2 extends StatelessWidget {
                   HeroView(
                     id: cardHeroId,
                     modifiers: [
-                      HeroModifier.spring(stiffness: 250, damping: 25),
+                      HeroModifier.spring(stiffness: 250, dampingRatio: 0.79),
                       HeroModifier.useNoSnapshot,
                     ],
                     child: CardView(imageIndex: cardIndex),

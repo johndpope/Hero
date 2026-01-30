@@ -29,6 +29,7 @@ class HeroExamplesApp extends StatelessWidget {
       ],
       builder: (context, child) {
         return Stack(
+          fit: StackFit.expand,
           children: [
             child!,
             const HeroOverlay(),

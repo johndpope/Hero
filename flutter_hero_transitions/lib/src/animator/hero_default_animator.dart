@@ -135,13 +135,26 @@ class HeroDefaultAnimator {
     entries.clear();
   }
 
-  /// Calculate optimized duration based on Material Design motion guide.
-  /// duration = 0.208 + movePoints.clamp(0, 500) / 3000
+  /// Calculate duration based on iOS Core Animation timing.
+  ///
+  /// iOS defaults:
+  /// - Base duration: 0.3s (300ms) for most transitions
+  /// - Long distance: up to 0.5s (500ms) for very large moves
+  ///
+  /// Formula: 0.3 + (distance / screen_width) * 0.2
+  /// This gives 0.3s for short moves, scaling to 0.5s for full-screen.
   Duration _calculateDuration(Rect from, Rect to) {
     final moveDistance = (from.center - to.center).distance;
-    final sizeChange = Offset(from.width - to.width, from.height - to.height).distance;
+    final widthChange = (from.width - to.width).abs();
+    final heightChange = (from.height - to.height).abs();
+    final sizeChange = math.sqrt(widthChange * widthChange + heightChange * heightChange);
     final maxChange = math.max(moveDistance, sizeChange);
-    final seconds = 0.208 + maxChange.clamp(0.0, 500.0) / 3000.0;
+
+    // iOS default: 0.3s base, up to 0.5s for large distances
+    // Assume typical screen width ~400 logical pixels
+    final distanceRatio = (maxChange / 400.0).clamp(0.0, 1.0);
+    final seconds = 0.3 + distanceRatio * 0.2;
+
     return Duration(milliseconds: (seconds * 1000).round());
   }
 
