@@ -1,0 +1,113 @@
+# Flutter Hero Transitions - Image Asset Manifest
+# Extracted from iOS Hero Examples/Resources/Assets.xcassets/
+# Generated: 2026-01-30
+#
+# For icons (ic_*), the @3x / _3x highest-resolution variant was selected.
+# For photos, the original (single-resolution) image was used.
+#
+# Usage in Flutter:
+#   Image.asset('assets/foods/unsplash0.png')
+#   Image.asset('assets/icons/ic_close.png')
+#
+# ============================================================
+
+## Root Assets
+hero_logo.png                          # Hero library logo (@3x, 220K)
+bigbuckbunny.jpg                       # Big Buck Bunny video poster (59K)
+
+## Foods (Unsplash Images)
+# Each image has 3 variants:
+#   - full:  unsplashN.{png|jpg}       (large, ~1-2MB)
+#   - cell:  unsplashN_cell.{png|jpg}  (medium, ~40-100K, for list cells)
+#   - thumb: unsplashN_thumb.{png|jpg} (small, ~200-550K, for thumbnails)
+foods/unsplash0.png
+foods/unsplash0_cell.png
+foods/unsplash0_thumb.png
+foods/unsplash1.png
+foods/unsplash1_cell.png
+foods/unsplash1_thumb.png
+foods/unsplash2.png
+foods/unsplash2_cell.png
+foods/unsplash2_thumb.png
+foods/unsplash3.png
+foods/unsplash3_cell.png
+foods/unsplash3_thumb.png
+foods/unsplash4.png
+foods/unsplash4_cell.png
+foods/unsplash4_thumb.png
+foods/unsplash5.png
+foods/unsplash5_cell.png
+foods/unsplash5_thumb.png
+foods/unsplash6.png
+foods/unsplash6_cell.png
+foods/unsplash6_thumb.png
+foods/unsplash7.png
+foods/unsplash7_cell.png
+foods/unsplash7_thumb.png
+foods/unsplash8.png
+foods/unsplash8_cell.png
+foods/unsplash8_thumb.png
+foods/unsplash9.png
+foods/unsplash9_cell.png
+foods/unsplash9_thumb.png
+foods/unsplash10.jpg
+foods/unsplash10_cell.jpg
+foods/unsplash10_thumb.jpg
+
+## City Guide
+city_guide/city_guide.jpeg             # Header/default city image (20K)
+city_guide/montreal.jpeg               # Montreal photo (644K)
+city_guide/toronto.jpeg                # Toronto photo (442K)
+city_guide/vancouver.jpeg              # Vancouver photo (611K)
+
+## Apple Home Page
+apple_home_page/iphone.jpg             # iPhone product shot (90K)
+apple_home_page/macbook.jpg            # MacBook product shot (100K)
+apple_home_page/watch.jpg              # Apple Watch product shot (71K)
+
+## Icons (General)
+icons/ic_bug_report.png                # Bug report icon (_3x)
+icons/ic_close.png                     # Close/dismiss icon (_3x)
+icons/ic_code.png                      # Code icon (_3x)
+icons/ic_input.png                     # Input icon (_3x)
+icons/ic_keyboard_arrow_down.png       # Dropdown arrow icon (_3x)
+icons/ic_view_list.png                 # List view icon (_3x)
+icons/ic_view_module.png               # Grid/module view icon (_3x)
+
+## Menu Icons
+menu/ic_audiotrack.png                 # Audio track icon (_3x)
+menu/ic_chat.png                       # Chat icon (_3x)
+menu/ic_format_quote.png               # Quote icon (_3x)
+menu/ic_gif.png                        # GIF icon (_3x)
+menu/ic_insert_photo.png               # Photo icon (_3x)
+menu/ic_link.png                       # Link icon (_3x)
+menu/ic_menu_36.png                    # Menu icon 36pt (_3x)
+menu/ic_menu_48.png                    # Menu icon 48pt (_3x)
+menu/ic_text_fields.png                # Text fields icon (_3x)
+menu/ic_videocam.png                   # Video camera icon (_3x)
+
+## Music Player
+music_player/album1.jpg                # Album cover art (40K)
+music_player/ic_fast_forward.png       # Fast forward icon (_3x)
+music_player/ic_fast_rewind.png        # Fast rewind icon (_3x)
+music_player/ic_pause.png              # Pause icon (_3x)
+music_player/ic_play.png               # Play icon (_3x)
+music_player/ic_repeat.png             # Repeat icon (_3x)
+music_player/ic_shuffle.png            # Shuffle icon (_3x)
+
+# ============================================================
+# Total: 66 image files
+# Source: iOS Hero Examples xcassets (github.com/HeroTransitions/Hero)
+#
+# pubspec.yaml asset declarations needed:
+#
+#   flutter:
+#     assets:
+#       - assets/
+#       - assets/foods/
+#       - assets/city_guide/
+#       - assets/apple_home_page/
+#       - assets/icons/
+#       - assets/menu/
+#       - assets/music_player/
+# ============================================================
