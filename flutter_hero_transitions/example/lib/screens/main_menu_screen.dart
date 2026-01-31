@@ -17,9 +17,14 @@ import 'tv_image_gallery_example.dart';
 
 /// Main menu listing all example screens.
 /// Equivalent to iOS MainViewController.
-class MainMenuScreen extends StatelessWidget {
+class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
 
+  @override
+  State<MainMenuScreen> createState() => _MainMenuScreenState();
+}
+
+class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +61,53 @@ class MainMenuScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Debug mode toggle
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          HeroDebugPlugin.isEnabled =
+                              !HeroDebugPlugin.isEnabled;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: HeroDebugPlugin.isEnabled
+                              ? const Color(0xFFFC3A5E)
+                              : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.bug_report,
+                              size: 18,
+                              color: HeroDebugPlugin.isEnabled
+                                  ? Colors.white
+                                  : Colors.grey[600],
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              HeroDebugPlugin.isEnabled
+                                  ? 'Debug ON'
+                                  : 'Debug OFF',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: HeroDebugPlugin.isEnabled
+                                    ? Colors.white
+                                    : Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -181,6 +233,7 @@ class MainMenuScreen extends StatelessWidget {
     );
   }
 }
+
 
 class _SectionHeader extends StatelessWidget {
   final String title;

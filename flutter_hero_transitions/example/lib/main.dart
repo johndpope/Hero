@@ -3,9 +3,9 @@ import 'package:flutter_hero_transitions/flutter_hero_transitions.dart';
 import 'screens/main_menu_screen.dart';
 
 void main() {
-  // Enable the debug plugin to inspect transitions with scrub slider,
-  // arc visualization, and 3D perspective view.
-  HeroDebugPlugin.isEnabled = true;
+  // Debug plugin is off by default. Toggle it from the main menu
+  // (bug icon) to inspect transitions with the scrub slider.
+  HeroDebugPlugin.isEnabled = false;
 
   runApp(const HeroExamplesApp());
 }

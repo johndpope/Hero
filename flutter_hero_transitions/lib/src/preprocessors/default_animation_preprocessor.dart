@@ -23,10 +23,9 @@ class DefaultAnimationPreprocessor extends HeroPreprocessor {
   }) {
     if (context == null) return;
 
-    // Resolve selectBy based on presenting/dismissing
+    // Resolve selectBy and auto based on presenting/dismissing
     final resolvedType = _resolveAnimationType(animationType);
-    if (resolvedType is HeroAnimationTypeNone ||
-        resolvedType is HeroAnimationTypeAuto) {
+    if (resolvedType is HeroAnimationTypeNone) {
       return;
     }
 
@@ -45,6 +44,14 @@ class DefaultAnimationPreprocessor extends HeroPreprocessor {
   HeroAnimationType _resolveAnimationType(HeroAnimationType type) {
     if (type is HeroAnimationTypeSelectBy) {
       return isPresenting ? type.presenting : type.dismissing;
+    }
+    if (type is HeroAnimationTypeAuto) {
+      // Auto resolves to standard iOS navigation animation:
+      // push-left for presenting, pull-right for dismissing.
+      return isPresenting
+          ? const HeroAnimationTypePush(direction: HeroAnimationDirection.left)
+          : const HeroAnimationTypePull(
+              direction: HeroAnimationDirection.right);
     }
     return type;
   }
