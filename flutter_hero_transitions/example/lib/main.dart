@@ -3,6 +3,10 @@ import 'package:flutter_hero_transitions/flutter_hero_transitions.dart';
 import 'screens/main_menu_screen.dart';
 
 void main() {
+  // Enable the debug plugin to inspect transitions with scrub slider,
+  // arc visualization, and 3D perspective view.
+  HeroDebugPlugin.isEnabled = true;
+
   runApp(const HeroExamplesApp());
 }
 
@@ -32,7 +36,11 @@ class HeroExamplesApp extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             child!,
-            const HeroOverlayV2(), // Optimized overlay for better performance
+            // HeroDebugWrapper combines HeroOverlayV2 with debug controls
+            // (3D perspective, arc visualization, scrub slider).
+            // When HeroDebugPlugin.isEnabled is false, it behaves identically
+            // to a plain HeroOverlayV2.
+            const HeroDebugWrapper(),
           ],
         );
       },

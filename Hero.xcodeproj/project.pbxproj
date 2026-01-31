@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		054B5C04A7E0A16EC03936E7 /* ImageGallery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76A41E46C3D7002DBC58 /* ImageGallery.storyboard */; };
+		12570013F1D5B6380FF9D937 /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1275D961E4C0D850099A0E9 /* PluginViewController.swift */; };
+		160F8877224C1DA4B1281547 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = A33E60A91DE761C90065CBD8 /* Base */; };
+		1D506ED1E8977A5765D61BC8 /* Navigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B147F2641FAEA8F0006475A3 /* Navigation.storyboard */; };
 		1F0287FA2173F3C80008FA3B /* SwiftSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0287F92173F3C80008FA3B /* SwiftSupport.swift */; };
 		1F0287FB2173F3C80008FA3B /* SwiftSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0287F92173F3C80008FA3B /* SwiftSupport.swift */; };
+		222D3DEEDBF3B176085A574E /* UIColor+FlatColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F249B9699F1F53E31AEAD0BE /* UIColor+FlatColors.swift */; };
+		2708E1D903C10137BFE91026 /* ImageGalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3499D9E1DF2024E0049B541 /* ImageGalleryCollectionViewController.swift */; };
 		2D1F7FC71E49DD02004D944B /* HeroTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37D7B511E2C0CBD00AC1959 /* HeroTransition.swift */; };
 		2D1F7FC81E49DD04004D944B /* HeroContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37D7B521E2C0CBD00AC1959 /* HeroContext.swift */; };
 		2D1F7FC91E49DD08004D944B /* HeroModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37D7B551E2C0CBD00AC1959 /* HeroModifier.swift */; };
@@ -35,12 +41,28 @@
 		2D1F7FE71E49DD90004D944B /* TVImageGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1F7FE61E49DD90004D944B /* TVImageGalleryViewController.swift */; };
 		2D1F7FEA1E49DD90004D944B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D1F7FE81E49DD90004D944B /* Main.storyboard */; };
 		2D1F7FF21E49E043004D944B /* Hero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D1F7FBF1E49DCB5004D944B /* Hero.framework */; };
+		2E7638FA9CD8D1C612F0D0DC /* ImageLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A313499A1E1E2AED00EB5139 /* ImageLibrary.swift */; };
+		303DBA226EE1D6BE16C468DD /* GridCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185A4E71DFA6FE200C3B85D /* GridCollectionViewController.swift */; };
+		36456DDB822D94759045E459 /* VideoPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76AF1E46C449002DBC58 /* VideoPlayer.storyboard */; };
+		450CA1529237B5CA2FBC63B8 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185A4E51DFA6E0C00C3B85D /* ListTableViewController.swift */; };
+		4675E8C0B82EDD2F3440FA96 /* CityGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E60BB1DE7621C0065CBD8 /* CityGuideViewController.swift */; };
+		491B058E996A1859C846E8F2 /* CityGuideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E60BA1DE7621C0065CBD8 /* CityGuideCell.swift */; };
 		4D307DF420E3C6DC00DD9F65 /* HeroModifier+Advanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D307DF320E3C6DC00DD9F65 /* HeroModifier+Advanced.swift */; };
 		4D307DF520E3C6DC00DD9F65 /* HeroModifier+Advanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D307DF320E3C6DC00DD9F65 /* HeroModifier+Advanced.swift */; };
+		557DFAF641F61DEB09217D20 /* AppleProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B114B68F1E412A0B0009CEDE /* AppleProductViewController.swift */; };
 		5C5442AA2004092500E1E326 /* HeroCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C69728F2002CDBD001A5051 /* HeroCompatible.swift */; };
 		5C6972902002CDBD001A5051 /* HeroCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C69728F2002CDBD001A5051 /* HeroCompatible.swift */; };
+		5D6C71811A3B3022BDC9035E /* CityGuide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76A01E46C3C2002DBC58 /* CityGuide.storyboard */; };
+		61354014A354E2F010D4BE0F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32D2D0C1E4D545B008D35FF /* MenuViewController.swift */; };
 		62EFDDAC236F4FC200F3E85E /* SwiftUIMatchExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EFDDAB236F4FC200F3E85E /* SwiftUIMatchExample.swift */; };
+		6D1C865352AEB18ADCD941B9 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E60BC1DE7621C0065CBD8 /* CityViewController.swift */; };
+		6D742728F5CEDC5703EAE1B1 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B147F2631FAEA8F0006475A3 /* FirstViewController.swift */; };
+		74BB7C1E36A38ADB8CEF235D /* AnimationSelectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16A219F1E4E3907007B8B4C /* AnimationSelectTableViewController.swift */; };
+		7B2A46D4395D9E866B06975D /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304BF831DF2717900A03345 /* ImageViewController.swift */; };
+		7EA68BEE5D44DC02C5A3EA35 /* ImageCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304BF891DF647FC00A03345 /* ImageCells.swift */; };
 		83043017B73BC66DBB920D5C /* Pods_HeroExamples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE340F89FF0A49DD23A5A6E /* Pods_HeroExamples.framework */; };
+		9B96E4CCF79424AA589144D3 /* MusicPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F769C1E46C3A2002DBC58 /* MusicPlayer.storyboard */; };
+		9E14F6B0F3C809D8217D75E5 /* ListToGrid.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76A21E46C3CB002DBC58 /* ListToGrid.storyboard */; };
 		A306D3B61E1C7A2E00B6C23A /* Hero.h in Headers */ = {isa = PBXBuildFile; fileRef = A306D3B41E1C7A2E00B6C23A /* Hero.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A306D3B91E1C7A2E00B6C23A /* Hero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A306D3B21E1C7A2E00B6C23A /* Hero.framework */; };
 		A306D3BB1E1C7A2E00B6C23A /* Hero.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A306D3B21E1C7A2E00B6C23A /* Hero.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -132,13 +154,21 @@
 		B35264CF2454FEF300D33861 /* Locale+Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35264CD2454FEF300D33861 /* Locale+Hero.swift */; };
 		B383074925D1041A00B7A0D8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B383074825D1041A00B7A0D8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B383074B25D1042C00B7A0D8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B383074A25D1042C00B7A0D8 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B9C9B302C8E620EE57999C6D /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E60B91DE7621C0065CBD8 /* City.swift */; };
+		BF02B08A0D983342CC379E80 /* ImageViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76A51E46C3D7002DBC58 /* ImageViewer.storyboard */; };
+		C7B8D17AA32463235DAFC8D4 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F76B01E46C449002DBC58 /* VideoPlayerViewController.swift */; };
+		C8AEEDAD8A1736898AC8E177 /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F769B1E46C3A2002DBC58 /* Menu.storyboard */; };
 		DBA05BB41A704A4A17967918 /* Pods_HeroTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841FFA357ACB279D3F74CDEE /* Pods_HeroTests.framework */; };
+		E1E12650CD6C48E32A2B46DC /* Basic.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F769A1E46C3A2002DBC58 /* Basic.storyboard */; };
+		E995D3310B0FBDC399333E45 /* BuiltInTransitions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32D2D0F1E4E14DD008D35FF /* BuiltInTransitions.storyboard */; };
+		EDA55E6F616FC72487724FE9 /* LegacyExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35949171E1A2BE60095F407 /* LegacyExampleViewController.swift */; };
 		F482F0BE235D7808002E97ED /* UIColor+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482F0BD235D7808002E97ED /* UIColor+HexString.swift */; };
 		F482F0BF235D7808002E97ED /* UIColor+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = F482F0BD235D7808002E97ED /* UIColor+HexString.swift */; };
 		F482F0C0235D7A3A002E97ED /* ImageGalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3499D9E1DF2024E0049B541 /* ImageGalleryCollectionViewController.swift */; };
 		F482F0C1235D7A51002E97ED /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304BF831DF2717900A03345 /* ImageViewController.swift */; };
 		F482F0C2235D7A5B002E97ED /* ImageCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304BF891DF647FC00A03345 /* ImageCells.swift */; };
 		F482F0C3235D7A65002E97ED /* ImageLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A313499A1E1E2AED00EB5139 /* ImageLibrary.swift */; };
+		FF8CB774C9A7C60CB4EC3C8B /* AppleHomePage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19F76981E46C38E002DBC58 /* AppleHomePage.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -295,6 +325,7 @@
 		C377744CBFF1E24426E80F55 /* Pods-HeroExamples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroExamples.release.xcconfig"; path = "Pods/Target Support Files/Pods-HeroExamples/Pods-HeroExamples.release.xcconfig"; sourceTree = "<group>"; };
 		C51A6465EC2CB38D82F28B93 /* Pods-HeroTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeroTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HeroTests/Pods-HeroTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EEE340F89FF0A49DD23A5A6E /* Pods_HeroExamples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeroExamples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F249B9699F1F53E31AEAD0BE /* UIColor+FlatColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+FlatColors.swift"; sourceTree = "<group>"; };
 		F482F0BD235D7808002E97ED /* UIColor+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexString.swift"; sourceTree = "<group>"; };
 		F482F0C5235D7C4C002E97ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		FD2306FDA4E15ADA91EFED44 /* Pods_HeroTvOSExamples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeroTvOSExamples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -514,6 +545,7 @@
 				A35949171E1A2BE60095F407 /* LegacyExampleViewController.swift */,
 				A33E60A81DE761C90065CBD8 /* Main.storyboard */,
 				B1275D961E4C0D850099A0E9 /* PluginViewController.swift */,
+				F249B9699F1F53E31AEAD0BE /* UIColor+FlatColors.swift */,
 			);
 			path = LegacyExamples;
 			sourceTree = "<group>";
@@ -875,6 +907,18 @@
 			files = (
 				A33E60AF1DE761C90065CBD8 /* LaunchScreen.storyboard in Resources */,
 				A33E60AC1DE761C90065CBD8 /* Assets.xcassets in Resources */,
+				FF8CB774C9A7C60CB4EC3C8B /* AppleHomePage.storyboard in Resources */,
+				E995D3310B0FBDC399333E45 /* BuiltInTransitions.storyboard in Resources */,
+				5D6C71811A3B3022BDC9035E /* CityGuide.storyboard in Resources */,
+				054B5C04A7E0A16EC03936E7 /* ImageGallery.storyboard in Resources */,
+				BF02B08A0D983342CC379E80 /* ImageViewer.storyboard in Resources */,
+				9E14F6B0F3C809D8217D75E5 /* ListToGrid.storyboard in Resources */,
+				C8AEEDAD8A1736898AC8E177 /* Menu.storyboard in Resources */,
+				36456DDB822D94759045E459 /* VideoPlayer.storyboard in Resources */,
+				1D506ED1E8977A5765D61BC8 /* Navigation.storyboard in Resources */,
+				E1E12650CD6C48E32A2B46DC /* Basic.storyboard in Resources */,
+				9B96E4CCF79424AA589144D3 /* MusicPlayer.storyboard in Resources */,
+				160F8877224C1DA4B1281547 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,13 +940,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-HeroExamples/Pods-HeroExamples-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-HeroExamples/Pods-HeroExamples-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1123,6 +1163,24 @@
 				A3D060C6208348CB00E48927 /* MatchInCollectionExample.swift in Sources */,
 				A3D060C220833B4E00E48927 /* ExampleBaseViewController.swift in Sources */,
 				A3B8C5672083376100E112F6 /* MainViewController.swift in Sources */,
+				557DFAF641F61DEB09217D20 /* AppleProductViewController.swift in Sources */,
+				74BB7C1E36A38ADB8CEF235D /* AnimationSelectTableViewController.swift in Sources */,
+				B9C9B302C8E620EE57999C6D /* City.swift in Sources */,
+				491B058E996A1859C846E8F2 /* CityGuideCell.swift in Sources */,
+				4675E8C0B82EDD2F3440FA96 /* CityGuideViewController.swift in Sources */,
+				6D1C865352AEB18ADCD941B9 /* CityViewController.swift in Sources */,
+				7EA68BEE5D44DC02C5A3EA35 /* ImageCells.swift in Sources */,
+				2708E1D903C10137BFE91026 /* ImageGalleryCollectionViewController.swift in Sources */,
+				2E7638FA9CD8D1C612F0D0DC /* ImageLibrary.swift in Sources */,
+				7B2A46D4395D9E866B06975D /* ImageViewController.swift in Sources */,
+				303DBA226EE1D6BE16C468DD /* GridCollectionViewController.swift in Sources */,
+				450CA1529237B5CA2FBC63B8 /* ListTableViewController.swift in Sources */,
+				61354014A354E2F010D4BE0F /* MenuViewController.swift in Sources */,
+				C7B8D17AA32463235DAFC8D4 /* VideoPlayerViewController.swift in Sources */,
+				6D742728F5CEDC5703EAE1B1 /* FirstViewController.swift in Sources */,
+				EDA55E6F616FC72487724FE9 /* LegacyExampleViewController.swift in Sources */,
+				12570013F1D5B6380FF9D937 /* PluginViewController.swift in Sources */,
+				222D3DEEDBF3B176085A574E /* UIColor+FlatColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

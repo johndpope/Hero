@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import '../data/image_library.dart';
 
 /// App Store-style card widget with image, blur overlay, title, and subtitle.
 /// Used by AppStoreCardExample.
@@ -26,7 +27,7 @@ class CardView extends StatelessWidget {
           children: [
             // Background image
             Image.asset(
-              'assets/Unsplash$imageIndex.jpg',
+              ImageLibrary.image(imageIndex),
               fit: BoxFit.cover,
               errorBuilder: (context, error, stack) => Container(
                 color: HSVColor.fromAHSV(1, (imageIndex * 36.0) % 360, 0.7, 0.8).toColor(),

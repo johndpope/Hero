@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hero_transitions/flutter_hero_transitions.dart';
+import '../data/image_library.dart';
 import '../widgets/example_scaffold.dart';
 
 /// List-to-Grid Example - toggle between list and grid layouts with cascade.
@@ -105,7 +106,7 @@ class _ListToGridExampleScreenState extends State<ListToGridExampleScreen> {
                       borderRadius: BorderRadius.circular(isGrid ? 8 : 8),
                     ),
                     child: Image.asset(
-                      'assets/foods/unsplash${index % 10}.jpg',
+                      ImageLibrary.thumbnail(index),
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => Container(
                         color: color.withOpacity(0.7),
@@ -151,7 +152,7 @@ class _ListToGridDetailScreen extends StatelessWidget {
               id: 'listGridImage_$index',
               modifiers: [HeroModifier.arc],
               child: Image.asset(
-                'assets/foods/unsplash${index % 10}.jpg',
+                ImageLibrary.thumbnail(index),
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hero_transitions/flutter_hero_transitions.dart';
+import '../data/image_library.dart';
 import '../widgets/example_scaffold.dart';
 
 /// Match Flutter Example (port of SwiftUI Match).
@@ -34,7 +35,7 @@ class MatchFlutterExampleScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
-                        'assets/foods/unsplash$index.jpg',
+                        ImageLibrary.thumbnail(index),
                         width: 80,
                         height: 80,
                         fit: BoxFit.cover,
@@ -97,7 +98,7 @@ class _MatchFlutterDetailScreen extends StatelessWidget {
           child: HeroView(
             id: 'unsplash_${index}_cell',
             child: Image.asset(
-              'assets/foods/unsplash$index.jpg',
+              ImageLibrary.image(index),
               fit: BoxFit.contain,
               width: double.infinity,
               errorBuilder: (_, __, ___) => Container(

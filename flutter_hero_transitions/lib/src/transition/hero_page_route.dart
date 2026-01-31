@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../types/hero_animation_type.dart';
+import '../animator/hero_animation_entry.dart';
+import 'hero_transition_engine.dart';
 
 /// Custom page route that integrates with the Hero transition engine.
 /// This replaces Flutter's default page transition.
@@ -33,7 +35,7 @@ class HeroPageRoute<T> extends PageRoute<T> {
   });
 
   @override
-  bool get opaque => true;
+  bool get opaque => false;
 
   @override
   bool get barrierDismissible => false;
@@ -77,13 +79,29 @@ class HeroPageRoute<T> extends PageRoute<T> {
       );
     }
 
-    // The HeroTransitionEngine handles the actual animation.
-    // We provide a transparent transition so the overlay can render
-    // the animated views on top.
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, _) {
-        return child;
+    // The HeroTransitionEngine handles the actual animation via overlay.
+    // During a hero transition, hide only the "upper" route so the source
+    // page stays visible underneath and the overlay proxy renders on top.
+    //
+    // Upper route = destination (toRoute) during push, source (fromRoute)
+    // during pop. This matches iOS behavior where the transitioning view
+    // controller is invisible — only the overlay's snapshots are visible.
+    return ValueListenableBuilder<List<HeroAnimationEntry>>(
+      valueListenable: HeroTransitionEngine.shared.activeAnimations,
+      builder: (context, entries, _) {
+        if (entries.isEmpty) {
+          return child;
+        }
+
+        final engine = HeroTransitionEngine.shared;
+        final isUpperRoute = engine.isPresenting
+            ? (engine.toRoute == this)
+            : (engine.fromRoute == this);
+
+        return Opacity(
+          opacity: isUpperRoute ? 0.0 : 1.0,
+          child: child,
+        );
       },
     );
   }

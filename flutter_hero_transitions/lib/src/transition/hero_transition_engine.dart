@@ -60,6 +60,14 @@ class HeroTransitionEngine extends ChangeNotifier {
   bool interactive = false;
   bool get isInteractive => interactive;
 
+  /// Whether the current interactive mode was forced by the debug hook.
+  bool debugForceInteractive = false;
+
+  /// Hook that can force interactive mode. Set by [HeroDebugWrapper].
+  /// When this returns true, the engine forces interactive mode on all
+  /// transitions, allowing the debug overlay to control progress.
+  bool Function()? forceInteractiveHook;
+
   /// Whether a transition is currently active.
   bool get isTransitioning => _state != HeroTransitionState.possible;
 
@@ -81,6 +89,11 @@ class HeroTransitionEngine extends ChangeNotifier {
   /// Route references.
   Route<dynamic>? _fromRoute;
   Route<dynamic>? _toRoute;
+
+  /// Public getters for route references (used by HeroPageRoute to determine
+  /// whether to hide itself during transitions).
+  Route<dynamic>? get fromRoute => _fromRoute;
+  Route<dynamic>? get toRoute => _toRoute;
 
   /// Animation controller for non-interactive transitions.
   AnimationController? _animationController;
@@ -257,6 +270,15 @@ class HeroTransitionEngine extends ChangeNotifier {
     // Set entries list (structural change — triggers widget rebuild)
     _updateEntriesList();
 
+    // Force interactive mode when debug hook is set (e.g. HeroDebugPlugin)
+    if (forceInteractiveHook?.call() == true) {
+      interactive = true;
+      debugForceInteractive = true;
+      // Notify listeners so the debug overlay can detect the transition
+      // (the earlier _setState notification fired before entries were ready)
+      notifyListeners();
+    }
+
     if (!interactive) {
       // Non-interactive: drive animation with AnimationController
       _startAnimationController();
@@ -351,6 +373,7 @@ class HeroTransitionEngine extends ChangeNotifier {
     _fromRoute = null;
     _toRoute = null;
     interactive = false;
+    debugForceInteractive = false;
     _progress = 0.0;
 
     _setState(HeroTransitionState.possible);

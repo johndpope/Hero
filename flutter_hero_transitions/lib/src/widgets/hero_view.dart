@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import '../modifiers/hero_modifier.dart';
 import '../transition/hero_registry.dart';
+import '../transition/hero_transition_engine.dart';
+import '../animator/hero_animation_entry.dart';
 
 /// Widget that annotates a child with a Hero ID and modifiers.
 /// This is the primary public API for marking widgets to participate
@@ -48,10 +50,17 @@ class HeroView extends StatefulWidget {
 class _HeroViewState extends State<HeroView> {
   final GlobalKey _globalKey = GlobalKey();
 
+  /// Whether this view is currently hidden because a hero animation is active
+  /// for its ID. In iOS, the original view's alpha is set to 0 during
+  /// transitions so only the overlay proxy is visible.
+  bool _isHiddenByTransition = false;
+
   @override
   void initState() {
     super.initState();
     _register();
+    HeroTransitionEngine.shared.activeAnimations
+        .addListener(_onAnimationsChanged);
   }
 
   @override
@@ -67,8 +76,20 @@ class _HeroViewState extends State<HeroView> {
 
   @override
   void dispose() {
+    HeroTransitionEngine.shared.activeAnimations
+        .removeListener(_onAnimationsChanged);
     _unregister(widget.id);
     super.dispose();
+  }
+
+  void _onAnimationsChanged() {
+    final entries = HeroTransitionEngine.shared.activeAnimations.value;
+    final shouldHide = entries.any((e) => e.heroID == widget.id);
+    if (shouldHide != _isHiddenByTransition) {
+      setState(() {
+        _isHiddenByTransition = shouldHide;
+      });
+    }
   }
 
   void _register() {
@@ -90,9 +111,12 @@ class _HeroViewState extends State<HeroView> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: _globalKey,
-      child: widget.child,
+    return Opacity(
+      opacity: _isHiddenByTransition ? 0.0 : 1.0,
+      child: KeyedSubtree(
+        key: _globalKey,
+        child: widget.child,
+      ),
     );
   }
 }

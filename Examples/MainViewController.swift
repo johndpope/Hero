@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
       ({ MatchExampleViewController1() }, "Match Animation"),
       ({ MatchInCollectionExampleViewController1() }, "Match Cell in Collection"),
       ({ AppStoreViewController1() }, "App Store Transition"),
+      ({ viewController(forStoryboardName: "Main") }, "Legacy Examples"),
       ])
     
     if #available(iOS 13.0, *) {

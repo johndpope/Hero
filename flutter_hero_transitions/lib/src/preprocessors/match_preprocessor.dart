@@ -25,6 +25,13 @@ class MatchPreprocessor extends HeroPreprocessor {
       if (sourceState.size == null) {
         sourceState.size = destRect.size;
       }
+
+      // For matched views, clear appearance modifiers (fade, scale, transform).
+      // These modifiers are meant for UNMATCHED views that appear/disappear.
+      // Matched views should morph visibly between source and destination —
+      // the position/size tween IS the animation. This matches iOS Hero behavior.
+      sourceState.opacity = null;
+      sourceState.transform = null;
     }
   }
 }

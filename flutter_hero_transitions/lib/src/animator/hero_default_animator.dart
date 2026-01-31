@@ -28,8 +28,25 @@ class HeroDefaultAnimator {
     final matched = context.matchedIDs;
     for (final id in matched) {
       final sourceRect = context.sourceRect(id);
-      final destRect = context.destRect(id);
+      var destRect = context.destRect(id);
       if (sourceRect == null || destRect == null) continue;
+
+      // If the destination rect has a zero dimension (e.g., Image widget hasn't
+      // loaded yet), compute a reasonable target using the source's aspect ratio
+      // centered on the destination's position. This prevents squish artifacts.
+      if (destRect.width <= 0 || destRect.height <= 0) {
+        // Use the full container width and maintain source aspect ratio
+        final containerWidth = context.containerSize.width;
+        final aspectRatio = sourceRect.height / sourceRect.width;
+        final targetHeight = containerWidth * aspectRatio;
+        destRect = Rect.fromCenter(
+          center: destRect.center.dy == 0
+              ? Offset(containerWidth / 2, context.containerSize.height / 2)
+              : destRect.center,
+          width: containerWidth,
+          height: targetHeight,
+        );
+      }
 
       final state = context[id] ?? HeroTargetState();
       final sourceReg = context.sourceView(id);
@@ -41,6 +58,9 @@ class HeroDefaultAnimator {
         sourceRect: sourceRect,
         targetRect: destRect,
         targetState: state,
+        // For matched views, prefer the source widget as the snapshot.
+        // The source is already loaded and rendered (like iOS CALayer snapshot).
+        // The destination widget may not be ready (e.g., Image not loaded).
         snapshotWidget: _buildSnapshotWidget(sourceReg, destReg, sourceRect),
       );
 
@@ -213,13 +233,22 @@ class HeroDefaultAnimator {
   }
 
   /// Build a snapshot widget for the animation overlay.
+  ///
+  /// For matched views (both sourceReg and destReg non-null), prefer the
+  /// source widget since it's already loaded and rendered. The destination
+  /// widget (e.g., an Image.asset) may not have resolved its dimensions yet.
+  /// This matches iOS Hero behavior where a CALayer snapshot of the source
+  /// view is used during the morph.
   Widget _buildSnapshotWidget(
     dynamic sourceReg,
     dynamic destReg,
     Rect rect,
   ) {
-    // Use the widget from whichever registration is available
-    final reg = destReg ?? sourceReg;
+    // For matched views, prefer source (already rendered and loaded).
+    // For unmatched, use whichever is available.
+    final reg = (sourceReg != null && destReg != null)
+        ? sourceReg
+        : (destReg ?? sourceReg);
     if (reg == null) return const SizedBox.shrink();
 
     // Access the GlobalKey to get the current widget
