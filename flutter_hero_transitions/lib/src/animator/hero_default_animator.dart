@@ -18,13 +18,64 @@ class HeroDefaultAnimator {
 
   /// Create animation entries for all views and compute durations.
   /// Returns the total animation duration.
+  ///
+  /// Entry creation order determines overlay z-ordering (later = on top).
+  /// Order: unmatched source → unmatched dest → matched.
+  /// This ensures matched (morphing) views are always visible on top of
+  /// background elements like blur overlays that fade in/out.
   Duration animate({
     required List<String> fromViewIDs,
     required List<String> toViewIDs,
   }) {
     Duration maxDuration = Duration.zero;
 
-    // Matched views: create a single entry that morphs from source to destination
+    // --- 1. Unmatched source views (disappearing) — painted first (behind) ---
+    for (final id in context.unmatchedSourceIDs) {
+      final sourceRect = context.sourceRect(id);
+      if (sourceRect == null) continue;
+      final state = context[id] ?? HeroTargetState();
+      final sourceReg = context.sourceView(id);
+
+      // Target rect: apply position/size from modifiers, or stay in place
+      final targetRect = _computeTargetRect(sourceRect, state);
+
+      final entry = HeroAnimationEntry(
+        heroID: id,
+        appearing: false,
+        sourceRect: sourceRect,
+        targetRect: targetRect,
+        targetState: state,
+        snapshotWidget: _buildSnapshotWidget(sourceReg, null, sourceRect),
+      );
+
+      entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, targetRect);
+      entries[id] = entry;
+    }
+
+    // --- 2. Unmatched destination views (appearing) — painted in middle ---
+    for (final id in context.unmatchedDestIDs) {
+      final destRect = context.destRect(id);
+      if (destRect == null) continue;
+      final state = context[id] ?? HeroTargetState();
+      final destReg = context.destinationView(id);
+
+      // Source rect: compute from beginWith modifiers or same as dest
+      final sourceRect = _computeSourceRect(destRect, state);
+
+      final entry = HeroAnimationEntry(
+        heroID: id,
+        appearing: true,
+        sourceRect: sourceRect,
+        targetRect: destRect,
+        targetState: state,
+        snapshotWidget: _buildSnapshotWidget(null, destReg, sourceRect),
+      );
+
+      entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, destRect);
+      entries[id] = entry;
+    }
+
+    // --- 3. Matched views (morphing) — painted last (on top, always visible) ---
     final matched = context.matchedIDs;
     for (final id in matched) {
       final sourceRect = context.sourceRect(id);
@@ -62,52 +113,6 @@ class HeroDefaultAnimator {
         // The source is already loaded and rendered (like iOS CALayer snapshot).
         // The destination widget may not be ready (e.g., Image not loaded).
         snapshotWidget: _buildSnapshotWidget(sourceReg, destReg, sourceRect),
-      );
-
-      entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, destRect);
-      entries[id] = entry;
-    }
-
-    // Unmatched source views (disappearing)
-    for (final id in context.unmatchedSourceIDs) {
-      final sourceRect = context.sourceRect(id);
-      if (sourceRect == null) continue;
-      final state = context[id] ?? HeroTargetState();
-      final sourceReg = context.sourceView(id);
-
-      // Target rect: apply position/size from modifiers, or stay in place
-      final targetRect = _computeTargetRect(sourceRect, state);
-
-      final entry = HeroAnimationEntry(
-        heroID: id,
-        appearing: false,
-        sourceRect: sourceRect,
-        targetRect: targetRect,
-        targetState: state,
-        snapshotWidget: _buildSnapshotWidget(sourceReg, null, sourceRect),
-      );
-
-      entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, targetRect);
-      entries[id] = entry;
-    }
-
-    // Unmatched destination views (appearing)
-    for (final id in context.unmatchedDestIDs) {
-      final destRect = context.destRect(id);
-      if (destRect == null) continue;
-      final state = context[id] ?? HeroTargetState();
-      final destReg = context.destinationView(id);
-
-      // Source rect: compute from beginWith modifiers or same as dest
-      final sourceRect = _computeSourceRect(destRect, state);
-
-      final entry = HeroAnimationEntry(
-        heroID: id,
-        appearing: true,
-        sourceRect: sourceRect,
-        targetRect: destRect,
-        targetState: state,
-        snapshotWidget: _buildSnapshotWidget(null, destReg, sourceRect),
       );
 
       entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, destRect);
