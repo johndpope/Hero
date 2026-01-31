@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../types/hero_animation_type.dart';
-import '../animator/hero_animation_entry.dart';
 import 'hero_transition_engine.dart';
 
 /// Custom page route that integrates with the Hero transition engine.
@@ -71,46 +70,39 @@ class HeroPageRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    // Wrap child in an opaque background to prevent source route bleed-through.
-    // HeroPageRoute uses opaque: false to keep the source route painted during
-    // transitions, but when no transition is active the destination must block
-    // the source from showing through.
+    // Wrap child in an opaque background so the destination blocks the source
+    // route from showing through when settled (opaque: false keeps source painted).
     final bg = transitionBackgroundColor ??
         Theme.of(context).scaffoldBackgroundColor;
     final opaqueChild = ColoredBox(color: bg, child: child);
 
-    // If hero is not enabled, use a simple fade transition
     if (!heroEnabled) {
-      return FadeTransition(
-        opacity: animation,
-        child: opaqueChild,
-      );
+      return FadeTransition(opacity: animation, child: opaqueChild);
     }
 
-    // The HeroTransitionEngine handles the actual animation via overlay.
-    // During a hero transition, hide only the "upper" route so the source
-    // page stays visible underneath and the overlay proxy renders on top.
+    // Cross-fade routes during hero transitions to match iOS Hero behavior.
+    // In iOS Hero, both view controllers cross-dissolve while the overlay
+    // animates matched hero views on top. We replicate this using Flutter's
+    // built-in route animations:
     //
-    // Upper route = destination (toRoute) during push, source (fromRoute)
-    // during pop. This matches iOS behavior where the transitioning view
-    // controller is invisible — only the overlay's snapshots are visible.
-    return ValueListenableBuilder<List<HeroAnimationEntry>>(
-      valueListenable: HeroTransitionEngine.shared.activeAnimations,
-      builder: (context, entries, _) {
-        if (entries.isEmpty) {
-          return opaqueChild;
-        }
+    //   animation:          0→1 when this route enters, 1→0 when it exits
+    //   secondaryAnimation: 0→1 when another route pushes on top of this one
+    //
+    // Combined effect:
+    //   Destination route: fades in  (0→1) on push, fades out (1→0) on pop
+    //   Source route:      fades out (1→0) on push, fades in  (0→1) on pop
+    //
+    // This eliminates ghosting where original hero views remain visible at
+    // their source positions while overlay copies morph to the destination.
+    final fadeOut = Tween<double>(begin: 1.0, end: 0.0)
+        .animate(secondaryAnimation);
 
-        final engine = HeroTransitionEngine.shared;
-        final isUpperRoute = engine.isPresenting
-            ? (engine.toRoute == this)
-            : (engine.fromRoute == this);
-
-        return Opacity(
-          opacity: isUpperRoute ? 0.0 : 1.0,
-          child: opaqueChild,
-        );
-      },
+    return FadeTransition(
+      opacity: animation,
+      child: FadeTransition(
+        opacity: fadeOut,
+        child: opaqueChild,
+      ),
     );
   }
 }
