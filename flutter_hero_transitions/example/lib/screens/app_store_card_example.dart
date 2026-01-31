@@ -70,10 +70,10 @@ class AppStoreScreen2 extends StatelessWidget {
         body: Stack(
           children: [
             // Blur background
-            HeroView(
-              id: '${cardHeroId}_blur',
-              modifiers: [HeroModifier.fade],
-              child: Positioned.fill(
+            Positioned.fill(
+              child: HeroView(
+                id: '${cardHeroId}_blur',
+                modifiers: [HeroModifier.fade],
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(color: Colors.white.withOpacity(0.8)),
