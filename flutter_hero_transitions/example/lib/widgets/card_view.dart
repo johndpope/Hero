@@ -34,7 +34,7 @@ class CardView extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'Image $imageIndex',
-                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                    style: const TextStyle(color: Colors.white, fontSize: 24, decoration: TextDecoration.none),
                   ),
                 ),
               ),
@@ -76,8 +76,9 @@ class CardView extends StatelessWidget {
                           title ?? 'Card Title $imageIndex',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 28,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.none,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -85,7 +86,9 @@ class CardView extends StatelessWidget {
                           subtitle ?? 'Subtitle for card $imageIndex',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.8),
-                            fontSize: 15,
+                            fontSize: 17,
+                            fontWeight: FontWeight.normal,
+                            decoration: TextDecoration.none,
                           ),
                         ),
                       ],

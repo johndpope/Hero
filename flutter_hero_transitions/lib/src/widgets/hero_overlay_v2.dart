@@ -124,10 +124,15 @@ class _AnimatedEntryWidget extends StatelessWidget {
     return _AnimatedEntryRenderWidget(
       entry: entry,
       activeAnimations: activeAnimations,
-      child: SizedBox(
-        width: entry.sourceRect.width,
-        height: entry.sourceRect.height,
-        child: entry.snapshotWidget,
+      // DefaultTextStyle removes yellow underlines that appear when Text
+      // widgets are rendered outside a Material/Scaffold ancestor.
+      child: DefaultTextStyle(
+        style: const TextStyle(decoration: TextDecoration.none),
+        child: SizedBox(
+          width: entry.sourceRect.width,
+          height: entry.sourceRect.height,
+          child: entry.snapshotWidget,
+        ),
       ),
     );
   }
