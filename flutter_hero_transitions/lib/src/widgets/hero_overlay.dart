@@ -60,6 +60,26 @@ class _HeroOverlayState extends State<HeroOverlay>
     );
   }
 
+  /// Build a snapshot widget rendered at its native size and scaled to fit
+  /// the current animated rect. This mimics iOS CALayer bitmap snapshot
+  /// behavior — content is rendered once at its original size, then the
+  /// layer is scaled during the morph animation (no re-layout distortion).
+  Widget _buildScaledSnapshot(Widget snapshot, Size nativeSize, double w, double h) {
+    return SizedBox(
+      width: w,
+      height: h,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        clipBehavior: Clip.hardEdge,
+        child: SizedBox(
+          width: nativeSize.width,
+          height: nativeSize.height,
+          child: snapshot,
+        ),
+      ),
+    );
+  }
+
   Widget _buildAnimatedProxy(HeroAnimationEntry entry) {
     final w = entry.currentRect.width.clamp(0.0, double.infinity);
     final h = entry.currentRect.height.clamp(0.0, double.infinity);
@@ -68,25 +88,31 @@ class _HeroOverlayState extends State<HeroOverlay>
     // Build the content widget — either a single snapshot or a cross-fade
     // between source and destination snapshots (for matched views).
     Widget contentWidget;
-    if (entry.destSnapshotWidget != null) {
+    if (entry.destSnapshotWidget != null && entry.destSnapshotSize != null) {
       // Cross-fade: source fades out, destination fades in.
-      // Both are rendered at the current interpolated size so they
-      // fill the morphing frame correctly.
+      // Each snapshot is rendered at its NATIVE size and scaled to fit
+      // the current animated rect (like iOS CALayer bitmap snapshots).
+      // This prevents re-layout distortion when the source and destination
+      // have different aspect ratios or layouts.
       final t = entry.crossFadeProgress;
       contentWidget = Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip.hardEdge,
         children: [
           // Destination snapshot (behind, fading in)
           if (t > 0.0)
             Opacity(
               opacity: t.clamp(0.0, 1.0),
-              child: SizedBox(width: w, height: h, child: entry.destSnapshotWidget),
+              child: _buildScaledSnapshot(
+                entry.destSnapshotWidget!, entry.destSnapshotSize!, w, h,
+              ),
             ),
           // Source snapshot (on top, fading out)
           if (t < 1.0)
             Opacity(
               opacity: (1.0 - t).clamp(0.0, 1.0),
-              child: SizedBox(width: w, height: h, child: entry.snapshotWidget),
+              child: _buildScaledSnapshot(
+                entry.snapshotWidget, entry.sourceSnapshotSize, w, h,
+              ),
             ),
         ],
       );

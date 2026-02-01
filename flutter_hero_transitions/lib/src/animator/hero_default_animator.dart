@@ -46,6 +46,7 @@ class HeroDefaultAnimator {
         targetRect: targetRect,
         targetState: state,
         snapshotWidget: _buildSnapshotWidget(sourceReg, null, sourceRect),
+        sourceSnapshotSize: sourceRect.size,
       );
 
       entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, targetRect);
@@ -69,6 +70,7 @@ class HeroDefaultAnimator {
         targetRect: destRect,
         targetState: state,
         snapshotWidget: _buildSnapshotWidget(null, destReg, sourceRect),
+        sourceSnapshotSize: sourceRect.size,
       );
 
       entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, destRect);
@@ -111,10 +113,12 @@ class HeroDefaultAnimator {
         targetState: state,
         // Source snapshot: rendered at source size, used as starting visual.
         snapshotWidget: _buildSnapshotWidget(sourceReg, null, sourceRect),
+        sourceSnapshotSize: sourceRect.size,
         // Destination snapshot: rendered at destination size, cross-faded in.
         // This matches iOS Hero behavior where both CALayer snapshots are
         // cross-faded during the morph animation.
         destSnapshotWidget: _buildSnapshotWidget(null, destReg, destRect),
+        destSnapshotSize: destRect.size,
       );
 
       entry.animationDuration = state.duration ?? _calculateDuration(sourceRect, destRect);

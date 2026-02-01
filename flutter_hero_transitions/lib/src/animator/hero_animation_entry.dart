@@ -29,6 +29,14 @@ class HeroAnimationEntry {
   /// When non-null, the overlay cross-fades from snapshotWidget to this.
   final Widget? destSnapshotWidget;
 
+  /// The native size the source snapshot was captured at.
+  /// Used to render the snapshot at its original size and scale to fit.
+  final Size sourceSnapshotSize;
+
+  /// The native size the destination snapshot was captured at.
+  /// Used to render the snapshot at its original size and scale to fit.
+  final Size? destSnapshotSize;
+
   /// Current cross-fade progress (0.0 = source, 1.0 = destination).
   /// Only meaningful when destSnapshotWidget is non-null.
   double crossFadeProgress = 0.0;
@@ -73,6 +81,8 @@ class HeroAnimationEntry {
     required this.targetState,
     required this.snapshotWidget,
     this.destSnapshotWidget,
+    required this.sourceSnapshotSize,
+    this.destSnapshotSize,
     this.animationDuration = const Duration(milliseconds: 350),
   }) : currentRect = sourceRect {
     _buildTweens();
