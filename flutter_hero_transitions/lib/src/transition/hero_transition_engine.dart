@@ -288,11 +288,13 @@ class HeroTransitionEngine extends ChangeNotifier {
 
   void _startAnimationController() {
     if (_tickerProvider == null) {
-      // Fallback: complete immediately
+      // Fallback: seek to final state and complete after next frame
       _progress = 1.0;
       _animator?.seekTo(1.0);
       _notifyAnimations();
-      Future.microtask(() => _complete(finished: true));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _complete(finished: true);
+      });
       return;
     }
 
@@ -310,9 +312,18 @@ class HeroTransitionEngine extends ChangeNotifier {
 
     _animationController!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _complete(finished: true);
+        // Delay completion by one frame so the overlay renders the final
+        // position (progress=1.0) before being cleared. Without this, the
+        // value listener and status listener both fire in the same tick —
+        // the status listener clears the overlay before the final frame is
+        // painted, causing the animation to appear to "zoom past" the target.
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _complete(finished: true);
+        });
       } else if (status == AnimationStatus.dismissed) {
-        _complete(finished: false);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _complete(finished: false);
+        });
       }
     });
 
@@ -355,6 +366,13 @@ class HeroTransitionEngine extends ChangeNotifier {
   }
 
   void _complete({required bool finished}) {
+    // Guard: completion is deferred by one frame via addPostFrameCallback,
+    // so it may fire after the engine has already been reset by another
+    // transition or an interactive cancel.
+    if (_state != HeroTransitionState.animating &&
+        _state != HeroTransitionState.completing) {
+      return;
+    }
     _setState(HeroTransitionState.completing);
 
     // Clean up
