@@ -22,8 +22,16 @@ class HeroAnimationEntry {
   /// Target state with all modifiers applied.
   final HeroTargetState targetState;
 
-  /// The widget to render during animation.
+  /// The widget to render during animation (source snapshot for matched views).
   final Widget snapshotWidget;
+
+  /// For matched views: the destination widget to cross-fade into.
+  /// When non-null, the overlay cross-fades from snapshotWidget to this.
+  final Widget? destSnapshotWidget;
+
+  /// Current cross-fade progress (0.0 = source, 1.0 = destination).
+  /// Only meaningful when destSnapshotWidget is non-null.
+  double crossFadeProgress = 0.0;
 
   /// Computed animation duration for this entry.
   Duration animationDuration;
@@ -64,6 +72,7 @@ class HeroAnimationEntry {
     required this.targetRect,
     required this.targetState,
     required this.snapshotWidget,
+    this.destSnapshotWidget,
     this.animationDuration = const Duration(milliseconds: 350),
   }) : currentRect = sourceRect {
     _buildTweens();
@@ -241,6 +250,12 @@ class HeroAnimationEntry {
     }
     if (_overlayOpacityTween != null) {
       overlayOpacity = _overlayOpacityTween!.transform(t);
+    }
+
+    // Cross-fade progress for matched views (source → destination).
+    // Uses the raw animation progress t so cross-fade is smooth and linear.
+    if (destSnapshotWidget != null) {
+      crossFadeProgress = t.clamp(0.0, 1.0);
     }
   }
 

@@ -61,11 +61,44 @@ class _HeroOverlayState extends State<HeroOverlay>
   }
 
   Widget _buildAnimatedProxy(HeroAnimationEntry entry) {
+    final w = entry.currentRect.width.clamp(0.0, double.infinity);
+    final h = entry.currentRect.height.clamp(0.0, double.infinity);
+    final borderRadius = BorderRadius.circular(entry.currentCornerRadius);
+
+    // Build the content widget — either a single snapshot or a cross-fade
+    // between source and destination snapshots (for matched views).
+    Widget contentWidget;
+    if (entry.destSnapshotWidget != null) {
+      // Cross-fade: source fades out, destination fades in.
+      // Both are rendered at the current interpolated size so they
+      // fill the morphing frame correctly.
+      final t = entry.crossFadeProgress;
+      contentWidget = Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Destination snapshot (behind, fading in)
+          if (t > 0.0)
+            Opacity(
+              opacity: t.clamp(0.0, 1.0),
+              child: SizedBox(width: w, height: h, child: entry.destSnapshotWidget),
+            ),
+          // Source snapshot (on top, fading out)
+          if (t < 1.0)
+            Opacity(
+              opacity: (1.0 - t).clamp(0.0, 1.0),
+              child: SizedBox(width: w, height: h, child: entry.snapshotWidget),
+            ),
+        ],
+      );
+    } else {
+      contentWidget = entry.snapshotWidget;
+    }
+
     return Positioned(
       left: entry.currentRect.left,
       top: entry.currentRect.top,
-      width: entry.currentRect.width.clamp(0.0, double.infinity),
-      height: entry.currentRect.height.clamp(0.0, double.infinity),
+      width: w,
+      height: h,
       child: Transform(
         transform: entry.currentTransform,
         alignment: Alignment.center,
@@ -76,21 +109,19 @@ class _HeroOverlayState extends State<HeroOverlay>
             children: [
               // Main content
               SizedBox(
-                width: entry.currentRect.width.clamp(0.0, double.infinity),
-                height: entry.currentRect.height.clamp(0.0, double.infinity),
+                width: w,
+                height: h,
                 child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(entry.currentCornerRadius),
+                  borderRadius: borderRadius,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: entry.currentBackgroundColor,
-                      borderRadius:
-                          BorderRadius.circular(entry.currentCornerRadius),
+                      borderRadius: borderRadius,
                       boxShadow: entry.currentBoxShadow != null
                           ? [entry.currentBoxShadow!]
                           : null,
                     ),
-                    child: entry.snapshotWidget,
+                    child: contentWidget,
                   ),
                 ),
               ),
@@ -100,8 +131,7 @@ class _HeroOverlayState extends State<HeroOverlay>
                   entry.overlayColor != null)
                 Positioned.fill(
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(entry.currentCornerRadius),
+                    borderRadius: borderRadius,
                     child: ColoredBox(
                       color: entry.overlayColor!
                           .withValues(alpha: entry.overlayOpacity!.clamp(0.0, 1.0)),
