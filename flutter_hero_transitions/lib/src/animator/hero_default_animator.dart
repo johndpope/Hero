@@ -268,16 +268,13 @@ class HeroDefaultAnimator {
 
     final widget = currentContext.widget;
     if (widget is KeyedSubtree) {
-      return SizedBox(
-        width: rect.width,
-        height: rect.height,
-        child: widget.child,
-      );
+      // Return the raw widget child WITHOUT a SizedBox wrapper.
+      // The overlay handles sizing: source snapshots are bitmap-scaled
+      // via FittedBox, destination snapshots render naturally at the
+      // animated size (widgets like Stack(fit: StackFit.expand) adapt).
+      return widget.child;
     }
 
-    return SizedBox(
-      width: rect.width,
-      height: rect.height,
-    );
+    return const SizedBox.shrink();
   }
 }

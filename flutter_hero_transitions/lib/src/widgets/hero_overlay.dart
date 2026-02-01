@@ -91,23 +91,31 @@ class _HeroOverlayState extends State<HeroOverlay>
     Widget contentWidget;
     if (entry.destSnapshotWidget != null && entry.destSnapshotSize != null) {
       // Cross-fade: source fades out, destination fades in.
-      // Each snapshot is rendered at its NATIVE size and scaled to fit
-      // the current animated rect (like iOS CALayer bitmap snapshots).
-      // This prevents re-layout distortion when the source and destination
-      // have different aspect ratios or layouts.
+      //
+      // SOURCE snapshot: rendered at its native size and bitmap-scaled via
+      // FittedBox.fill to fill the animated rect (like an iOS CALayer bitmap
+      // snapshot). Any aspect-ratio distortion is masked by the cross-fade
+      // since the source is fading out.
+      //
+      // DESTINATION snapshot: rendered directly at the animated rect size.
+      // Widgets like Stack(fit: StackFit.expand) + Image(fit: BoxFit.cover)
+      // naturally adapt to any size, so no FittedBox is needed. This avoids
+      // the distortion caused by rendering at native size then stretching.
       final t = entry.crossFadeProgress;
       contentWidget = Stack(
         clipBehavior: Clip.hardEdge,
         children: [
-          // Destination snapshot (behind, fading in)
+          // Destination snapshot (behind, fading in) — renders at animated size
           if (t > 0.0)
             Opacity(
               opacity: t.clamp(0.0, 1.0),
-              child: _buildScaledSnapshot(
-                entry.destSnapshotWidget!, entry.destSnapshotSize!, w, h,
+              child: SizedBox(
+                width: w,
+                height: h,
+                child: entry.destSnapshotWidget!,
               ),
             ),
-          // Source snapshot (on top, fading out)
+          // Source snapshot (on top, fading out) — bitmap-scaled from native size
           if (t < 1.0)
             Opacity(
               opacity: (1.0 - t).clamp(0.0, 1.0),
@@ -118,7 +126,10 @@ class _HeroOverlayState extends State<HeroOverlay>
         ],
       );
     } else {
-      contentWidget = entry.snapshotWidget;
+      // Single snapshot (unmatched views) — bitmap-scale to fill animated rect
+      contentWidget = _buildScaledSnapshot(
+        entry.snapshotWidget, entry.sourceSnapshotSize, w, h,
+      );
     }
 
     return Positioned(
