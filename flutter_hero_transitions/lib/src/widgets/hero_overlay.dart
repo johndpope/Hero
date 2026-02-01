@@ -60,17 +60,18 @@ class _HeroOverlayState extends State<HeroOverlay>
     );
   }
 
-  /// Build a snapshot widget rendered at its native size and scaled to fit
+  /// Build a snapshot widget rendered at its native size and stretched to fill
   /// the current animated rect. This mimics iOS CALayer bitmap snapshot
   /// behavior — content is rendered once at its original size, then the
-  /// layer is scaled during the morph animation (no re-layout distortion).
+  /// layer is stretched to fill the morphing frame (like a rasterized bitmap).
+  /// The cross-fade between source and destination masks any intermediate
+  /// distortion, just as iOS cross-fades two CALayer snapshots.
   Widget _buildScaledSnapshot(Widget snapshot, Size nativeSize, double w, double h) {
     return SizedBox(
       width: w,
       height: h,
       child: FittedBox(
-        fit: BoxFit.cover,
-        clipBehavior: Clip.hardEdge,
+        fit: BoxFit.fill,
         child: SizedBox(
           width: nativeSize.width,
           height: nativeSize.height,
