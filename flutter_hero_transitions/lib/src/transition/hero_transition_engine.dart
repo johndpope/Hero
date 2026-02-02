@@ -124,7 +124,9 @@ class HeroTransitionEngine extends ChangeNotifier {
     HeroAnimationType? animationType,
     bool interactive = false,
   }) {
-    if (_state != HeroTransitionState.possible) return;
+    if (_state != HeroTransitionState.possible) {
+      return;
+    }
 
     _setState(HeroTransitionState.notified);
     this.isPresenting = isPresenting;
@@ -199,7 +201,9 @@ class HeroTransitionEngine extends ChangeNotifier {
   }
 
   void _start({HeroAnimationType? animationType}) {
-    if (_state != HeroTransitionState.notified) return;
+    if (_state != HeroTransitionState.notified) {
+      return;
+    }
     _setState(HeroTransitionState.starting);
 
     // 1. Collect all registered HeroViews from source and destination routes

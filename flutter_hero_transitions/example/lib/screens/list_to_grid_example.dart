@@ -3,17 +3,18 @@ import 'package:flutter_hero_transitions/flutter_hero_transitions.dart';
 import '../data/image_library.dart';
 import '../widgets/example_scaffold.dart';
 
-/// List-to-Grid Example - toggle between list and grid layouts with cascade.
-class ListToGridExampleScreen extends StatefulWidget {
-  const ListToGridExampleScreen({super.key});
+/// List-to-Grid Example - toggle between list and grid layouts with hero transitions.
+///
+/// Mirrors the iOS Hero library's ListToGrid example where toggling between
+/// list and grid triggers `hero.replaceViewController(with:)`. In Flutter,
+/// this is done via `Navigator.pushReplacement` with a `HeroPageRoute`,
+/// causing the HeroTransitionEngine to match views by ID and animate them
+/// from their list positions to grid positions (and vice versa).
+class ListToGridExampleScreen extends StatelessWidget {
+  final bool isGrid;
+  const ListToGridExampleScreen({super.key, this.isGrid = false});
 
-  @override
-  State<ListToGridExampleScreen> createState() => _ListToGridExampleScreenState();
-}
-
-class _ListToGridExampleScreenState extends State<ListToGridExampleScreen> {
-  bool _isGrid = false;
-  final int _itemCount = 20;
+  static const int _itemCount = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +29,40 @@ class _ListToGridExampleScreenState extends State<ListToGridExampleScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  icon: Icon(_isGrid ? Icons.view_list : Icons.grid_view),
-                  onPressed: () => setState(() => _isGrid = !_isGrid),
+                  icon: Icon(isGrid ? Icons.view_list : Icons.grid_view),
+                  onPressed: () {
+                    // Replace current route with opposite layout.
+                    // This triggers the hero engine via didReplace, matching
+                    // HeroView IDs between the old and new routes.
+                    Navigator.of(context).pushReplacement(
+                      HeroPageRoute(
+                        builder: (_) => ListToGridExampleScreen(isGrid: !isGrid),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
           ),
           // Content
           Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: _isGrid ? _buildGrid() : _buildList(),
-            ),
+            child: isGrid ? _buildGrid(context) : _buildList(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildList() {
+  Widget _buildList(BuildContext context) {
     return ListView.builder(
-      key: const ValueKey('list'),
       padding: const EdgeInsets.all(8),
       itemCount: _itemCount,
-      itemBuilder: (context, index) => _buildItem(index, isGrid: false),
+      itemBuilder: (context, index) => _buildItem(context, index, isGrid: false),
     );
   }
 
-  Widget _buildGrid() {
+  Widget _buildGrid(BuildContext context) {
     return GridView.builder(
-      key: const ValueKey('grid'),
       padding: const EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -65,12 +70,54 @@ class _ListToGridExampleScreenState extends State<ListToGridExampleScreen> {
         crossAxisSpacing: 8,
       ),
       itemCount: _itemCount,
-      itemBuilder: (context, index) => _buildItem(index, isGrid: true),
+      itemBuilder: (context, index) => _buildItem(context, index, isGrid: true),
     );
   }
 
-  Widget _buildItem(int index, {required bool isGrid}) {
+  Widget _buildItem(BuildContext context, int index, {required bool isGrid}) {
     final color = HSVColor.fromAHSV(1, (index * 18.0) % 360, 0.6, 0.85).toColor();
+
+    Widget imageWidget = HeroView(
+      id: 'listGridImage_$index',
+      modifiers: [HeroModifier.arc],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.asset(
+          ImageLibrary.thumbnail(index),
+          width: isGrid ? double.infinity : 80,
+          height: isGrid ? double.infinity : 80,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Container(
+            width: isGrid ? double.infinity : 80,
+            height: isGrid ? double.infinity : 80,
+            color: color.withValues(alpha: 0.7),
+            child: Center(child: Text('$index', style: const TextStyle(color: Colors.white))),
+          ),
+        ),
+      ),
+    );
+
+    // Grid mode: image fills the entire cell (no Row needed)
+    // List mode: Row with image thumbnail + text label
+    Widget content;
+    if (isGrid) {
+      content = imageWidget;
+    } else {
+      content = Row(
+        children: [
+          imageWidget,
+          const SizedBox(width: 16),
+          Text(
+            'Item $index',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      );
+    }
 
     return Padding(
       padding: isGrid ? EdgeInsets.zero : const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -89,45 +136,12 @@ class _ListToGridExampleScreenState extends State<ListToGridExampleScreen> {
             );
           },
           child: Container(
-            height: isGrid ? null : 80,
+            height: isGrid ? double.infinity : 80,
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
-              children: [
-                HeroView(
-                  id: 'listGridImage_$index',
-                  modifiers: [HeroModifier.arc],
-                  child: Container(
-                    width: isGrid ? double.infinity : 80,
-                    height: isGrid ? double.infinity : 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(isGrid ? 8 : 8),
-                    ),
-                    child: Image.asset(
-                      ImageLibrary.thumbnail(index),
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: color.withOpacity(0.7),
-                        child: Center(child: Text('$index', style: const TextStyle(color: Colors.white))),
-                      ),
-                    ),
-                  ),
-                ),
-                if (!isGrid) ...[
-                  const SizedBox(width: 16),
-                  Text(
-                    'Item $index',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+            child: content,
           ),
         ),
       ),

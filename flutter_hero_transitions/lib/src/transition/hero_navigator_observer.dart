@@ -23,6 +23,11 @@ class HeroTransitionObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     if (route is HeroPageRoute && route.heroEnabled) {
+      // Tell the previous route what animation type is covering it,
+      // so it can animate its secondary (being-covered) transition correctly.
+      if (previousRoute is HeroPageRoute) {
+        previousRoute.setCoveredByType(route.animationType);
+      }
       engine.notifyTransition(
         fromRoute: previousRoute,
         toRoute: route,
